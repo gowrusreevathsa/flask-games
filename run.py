@@ -20,14 +20,6 @@ def sudoku():
 
 @app.route('/rockPaperScissors/')
 def rockPaperScissors():
-    # try:
-    #     with sqlite3.connect('gameroomRPS.db') as conn:
-    #         conn.execute('INSERT INTO gameRoom(GameID, P1Move, P2Move) VALUES("test", "test", "test")')
-    #         conn.commit()
-    # except:
-    #     conn.rollback()
-    #     print("***** Error 1 *****")
-    #     return render_template('rockPaperScissors.html')
     conn = sqlite3.connect('gameroomRPS.db')
     conn.row_factory = sqlite3.Row
     conn = conn.cursor()
@@ -93,32 +85,6 @@ def playRockPaperScissors():
                     cur.execute("SELECT * FROM gameRoom WHERE GameID = ?", (session['room']))
                     rows = cur.fetchall()
                     return render_template('playRockPaperScissors.html', rows = rows)
-
-                # cur.execute("SELECT P1Move FROM gameRoom WHERE GameID = ?", (session['room']))
-                # rows = cur.fetchall()
-                
-                # print("2")
-                # for r in rows:
-                #     print(r[0])
-                # if r[0] == None:
-                #     cur.execute("UPDATE gameRoom SET P1Move = ? WHERE GameID = ?", (op, session['room']))
-                #     cur.execute("SELECT * FROM gameRoom WHERE GameID = ?", (session['room']))
-                #     rows = cur.fetchall()
-                #     print("2")
-                #     return render_template('playRockPaperScissors.html', rows = rows)
-                # else:
-                #     print("3")
-                #     cur.execute("UPDATE gameRoom SET P2Move = ? WHERE GameID = ?", (op, session['room']))
-                #     P2 = op
-                #     cur.execute("SELECT P1Move from gameRoom WHERE GameID = ?", (session['room']))
-                #     P1 = cur.fetchall()
-                #     if P1 == 'Rock':
-                #         if P2 == 'Paper':
-                #             win = 'P2'
-                #         elif P1 == 'Scissors':
-                #             win = 'P1'
-                #         else:
-                #             win = None
         except:
             print("** ERROR **")
     cur.execute("SELECT * FROM gameRoom WHERE GameID = ?",(session['room']))
@@ -165,14 +131,6 @@ def RPSWin():
                     flash("Wait for another player")
                     return render_template('playRockPaperScissors.html')
         return render_template('playRockPaperScissors.html')
-            # if r[0] == "Rock" or r[0] == "Paper" or r[0] == "Scissors":
-            #     if r[1] == "Rock" or r[1] == "Paper" or r[1] == "Scissors":
-            #         winner = session['username']
-            #         if (r[0] == "Rock" and r[1] == "Scissors") or (r[0] == 'Paper' and r[1] == 'Rock') or (r[0] == 'Scissors' and r[1] == 'Paper'):
-            #             flash('P1 is the winner')
-            #             return render_template('playRockPaperScissors.html')
-            #     else:
-            #         return redirect(url_for('static', filename = 'winner.js'))
 
 if __name__ == '__main__':
     app.run(debug = True)
