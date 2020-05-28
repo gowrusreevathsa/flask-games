@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Flask Games</title>
+    </head>
+
+    <body>
+
+        {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <ul>
+               {% for message in messages %}
+               <li>{{ message }}</li>
+               {% endfor %}
+            </ul>
+         {% endif %}
+      {% endwith %}
+
+        <p>Rock Paper Scissors</p>
+        <br>
+        <form action="{{url_for('playRockPaperScissors')}}" method="POST">
+            <h5>Select an option</h5> <br>
+            <input type="radio" name="ans" value="Rock" checked> Rock <br>
+            <input type="radio" name="ans" value="Paper"> Paper <br>
+            <input type="radio" name="ans" value="Scissors"> Scissors <br>
+            <input type="submit" value="submit">
+        </form>
+        <form action="{{url_for('RPSWin')}}" method="POST">
+            <input type="submit" value="See Winner">
+        </form>
+        <table>
+            {% for row in rows %}
+                <tr>
+                    <td>{{row["GameID"]}}</td>
+                    <td>{{row["P1Move"]}}</td>
+                    <td>{{row["P2Move"]}}</td>
+                </tr>
+            {%endfor%}
+        </table>
+    </body>
+</html>

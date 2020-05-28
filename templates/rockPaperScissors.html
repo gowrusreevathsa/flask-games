@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title>Flask Games</title>
+    </head>
+
+    <body>
+        <p>Rock Paper Scissors</p>
+        <br>
+        <form action="{{url_for('gameRoomDbWrite')}}" method="POST">
+            <h4>Enter username</h4>
+            <input type="text" name="username"> <br><br>
+            <h4>Enter Game Room ID</h4> <br>
+            <input type="text" name="roomId">
+            <input type="submit" value="submit"/><br>
+        </form>
+        <table>
+            {% for row in rows %}
+                <tr>
+                    <td>{{row["GameID"]}}</td>
+                    <td>{{row["P1Move"]}}</td>
+                    <td>{{row["P2Move"]}}</td>
+                </tr>
+            {%endfor%}
+        </table>
+    </body>
+</html>
