@@ -13,14 +13,5 @@
             <input type="text" name="roomId">
             <input type="submit" value="submit"/><br>
         </form>
-        <table>
-            {% for row in rows %}
-                <tr>
-                    <td>{{row["GameID"]}}</td>
-                    <td>{{row["P1Move"]}}</td>
-                    <td>{{row["P2Move"]}}</td>
-                </tr>
-            {%endfor%}
-        </table>
     </body>
 </html>

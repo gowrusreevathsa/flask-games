@@ -7,10 +7,10 @@ app.secret_key = "random secret key"
 
 @app.route('/')
 def indexFun():
-    conn = sqlite3.connect('gameroomRPS.db')
+    # conn = sqlite3.connect('gameroomRPS.db')
     # conn.execute('DROP TABLE IF EXISTS gameRoom')
-    conn.execute('CREATE TABLE IF NOT EXISTS gameRoom (GameID TEXT, P1Move TEXT, P2Move TEXT)')
-    conn.close()
+    # conn.execute('CREATE TABLE IF NOT EXISTS gameRoom (GameID TEXT, P1Move TEXT, P2Move TEXT)')
+    # conn.close()
     return render_template("index.html")
 
 @app.route('/sudoku')
@@ -20,12 +20,13 @@ def sudoku():
 
 @app.route('/rockPaperScissors/')
 def rockPaperScissors():
-    conn = sqlite3.connect('gameroomRPS.db')
-    conn.row_factory = sqlite3.Row
-    conn = conn.cursor()
-    conn.execute('SELECT * FROM gameRoom')
-    rows = conn.fetchall();
-    return render_template('rockPaperScissors.html', rows = rows)
+    # conn = sqlite3.connect('gameroomRPS.db')
+    # conn.execute('CREATE TABLE IF NOT EXISTS gameRoom (GameID TEXT, P1Move TEXT, P2Move TEXT)')
+    # conn.row_factory = sqlite3.Row
+    # conn = conn.cursor()
+    # conn.execute('SELECT * FROM gameRoom')
+    # rows = conn.fetchall();
+    return render_template('rockPaperScissors.html')
 
 @app.route('/gameRoomDbWrite/', methods = ['POST'])
 def gameRoomDbWrite():
@@ -33,10 +34,12 @@ def gameRoomDbWrite():
     if request.method == 'POST':
         try:
             room = request.form['roomId']
+            conn = sqlite3.connect(room + '.db')
+            conn.execute('CREATE TABLE IF NOT EXISTS gameRoom (GameID TEXT, P1Move TEXT, P2Move TEXT)')
             session['room'] = room
             print(room)
 
-            with sqlite3.connect('gameroomRPS.db') as conn:
+            with sqlite3.connect(room + '.db') as conn:
                 print("1")
                 conn.row_factory = sqlite3.Row
                 print("1")
@@ -53,7 +56,7 @@ def gameRoomDbWrite():
                     session['player'] = 'P1'
                     rows = cur.fetchall()
                 print("1")
-                return render_template('playRockPaperScissors.html', rows = rows)
+                return render_template('playRockPaperScissors.html')
         except:
             print("***** ERROR *****")
             return render_template('index.html')
@@ -66,7 +69,7 @@ def playRockPaperScissors():
             op = request.form['ans']
             session['sel'] = op
             print("2")
-            with sqlite3.connect('gameroomRPS.db') as conn:
+            with sqlite3.connect(session['room'] + '.db') as conn:
                 print("2")
                 conn.row_factory = sqlite3.Row
                 cur = conn.cursor()
@@ -93,7 +96,7 @@ def playRockPaperScissors():
 
 @app.route('/RPSWin/', methods = ['POST'])
 def RPSWin():
-    with sqlite3.connect('gameroomRPS.db') as conn:
+    with sqlite3.connect(session['room'] + '.db') as conn:
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
 
@@ -130,6 +133,7 @@ def RPSWin():
                 else:
                     flash("Wait for another player")
                     return render_template('playRockPaperScissors.html')
+        cur.execute('DROP TABLE IF EXISTS gameRoom')
         return render_template('playRockPaperScissors.html')
 
 if __name__ == '__main__':

@@ -27,14 +27,5 @@
         <form action="{{url_for('RPSWin')}}" method="POST">
             <input type="submit" value="See Winner">
         </form>
-        <table>
-            {% for row in rows %}
-                <tr>
-                    <td>{{row["GameID"]}}</td>
-                    <td>{{row["P1Move"]}}</td>
-                    <td>{{row["P2Move"]}}</td>
-                </tr>
-            {%endfor%}
-        </table>
     </body>
 </html>
